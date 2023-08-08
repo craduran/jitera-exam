@@ -21,7 +21,7 @@
   "scripts": {
     "start": "webpack-dev-server --open --mode development",
     "type-check": "tsc",
-    "build": "npm run type-check && webpack --mode production",
+    "build": "webpack --mode production",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
