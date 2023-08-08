@@ -42,4 +42,9 @@ module.exports = {
         template: "public/index.html", // to import index.html file inside index.js
       }),
     ],
+    performance: {
+        hints: false,
+        maxEntrypointSize: 512000,
+        maxAssetSize: 512000
+    }
 };
