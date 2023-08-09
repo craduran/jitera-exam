@@ -1,14 +1,13 @@
 /**
  * @jest-environment jsdom
  */
-import React, { Fragment } from 'react';
-import { shallow, mount } from 'enzyme';
+import React from 'react';
+import { mount } from 'enzyme';
 import App from './../App';
-import axios, { AxiosResponse } from 'axios';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { AxiosResponse } from 'axios';
+import { act } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { expect as chaiexpect } from 'chai';
-import { UserList } from '../components/UserList';
 import { UserService } from '../services/user.service';
 import { User } from '../interfaces/user.interface';
 
@@ -18,7 +17,6 @@ jest.mock("../services/user.service");
 const mockError = { message: 'Something Bad Happened' };
 
 describe("App Component", () => {
-  let useStateSpy;
   beforeAll(() => {
     console.error = jest.fn();
     Object.defineProperty(window, "matchMedia", {
@@ -34,24 +32,13 @@ describe("App Component", () => {
         dispatchEvent: jest.fn(),
       }))
     });
-
   });
+
   afterEach(() => {
     jest.restoreAllMocks();
   });
-  // it('renders without crashing', () => {
-  //   const component = shallow(<App />);
-  //   chaiexpect(component.find(".row-wrapper")).to.have.length(1);
-  //   chaiexpect(component.find(UserList)).to.have.length(1);
-  // });
 
-  // // it('calls user api on load', () => {
-
-  // //   const appComponent = shallow(<App />);
-  // // })
-
-  let wrapper;
-  it("Renders component", async () => {
+  it("Renders users grid", async () => {
 
     const mAxiosResponse = {
       data: [
@@ -102,20 +89,23 @@ describe("App Component", () => {
           }
         }],
     } as AxiosResponse;
+
     jest.spyOn(UserService.prototype, 'getUsers').mockResolvedValueOnce(mAxiosResponse.data);
 
     const setStateMock = jest.fn();
     const useStateMock: any = (useState: User[]) => [useState, setStateMock];
     let wrapper;
+
     await act(async () => {
       wrapper = mount(<App />);
     })
+
     wrapper.update();
     chaiexpect(wrapper.find('.ant-col')).to.have.length(2); //check if it renders 2 user data
   })
 
 
-  it("When api service fails", async () => {
+  it("doesn't render users when api fails", async () => {
 
     jest.spyOn(UserService.prototype, 'getUsers').mockRejectedValue(async () => {
       return () => Promise.reject(mockError);
@@ -124,9 +114,11 @@ describe("App Component", () => {
     const setStateMock = jest.fn();
     const useStateMock: any = (useState: User[]) => [useState, setStateMock];
     let wrapper;
+
     await act(async () => {
       wrapper = mount(<App />);
     })
+    
     wrapper.update();
     chaiexpect(wrapper.find('.ant-col')).to.have.length(0); //check if it renders no user data
   })
