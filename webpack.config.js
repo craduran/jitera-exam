@@ -8,7 +8,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: `[name].[contenthash]-${Date.now()}.js`,
-        publicPath: './'
+        publicPath: '/'
     },
     devServer: {
         port: 3030,
@@ -40,6 +40,9 @@ module.exports = {
     plugins: [
       new HtmlWebpackPlugin({
         template: "public/index.html", // to import index.html file inside index.js
+        templateParameters: {
+            PUBLIC_URL: '.',
+        },
       }),
     ],
     performance: {

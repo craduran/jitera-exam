@@ -31,7 +31,7 @@ export const UserCard: React.FC<Props> = ({ user }: Props) => {
                 style={CardStyle.mainStyle}
                 cover={
                     <div className='card-cover-wrapper'>
-                        <img alt={`${user.username} profile`} src={user.avatar} style={CardStyle.coverImageStyle} />
+                        <img alt={`${user.username} profile`} src={`https://avatars.dicebear.com/v2/avataaars/${user.username}.svg?options%5Bmood%5D%5B%5D=happy`} style={CardStyle.coverImageStyle} />
                     </div>
                 }
                 actions={[

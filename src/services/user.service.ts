@@ -1,23 +1,23 @@
 import axios, { AxiosInstance } from "axios";
 
 export class UserService {
-    api_url: string | null;
+    api_url: string = "https://jsonplaceholder.typicode.com/";
     client: AxiosInstance | null;
+    
     constructor() {
-        this.api_url = "https://jsonplaceholder.typicode.com/";
-        this.client = null;
-    }
-
-    init = () => {
         let config = {
             baseURL: `${this.api_url}`,
             timeout: 300000,
         }
-        this.client = axios.create(config);
-        return this.client;
+        this.init(config);
     }
 
-    getUsers = () => {
-        return this.init().get('users');
+    init(config) {
+        this.client = axios.create(config);
+    }
+
+    async getUsers() {
+        const response = await this.client.get('users');
+        return response.data;
     }
 }
